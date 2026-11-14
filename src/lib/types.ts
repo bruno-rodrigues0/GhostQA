@@ -21,6 +21,7 @@ export interface Persona {
 
 export interface Step {
   id: string;
+  personaId: string;
   order: number;
   thought: string;
   frustrationLevel: number;
@@ -36,7 +37,7 @@ export interface Step {
 
 export interface TechLog {
   id: string;
-  type: "console" | "pageerror" | "http";
+  type: "console" | "pageerror" | "http" | "automation";
   message: string;
   url?: string;
   status?: number;
@@ -45,6 +46,7 @@ export interface TechLog {
 
 export interface Session {
   id: string;
+  ownerId?: string;
   targetUrl: string;
   objective: string;
   plan: Plan;
@@ -56,6 +58,7 @@ export interface Session {
   frictionScore: number | null;
   missionStatus: MissionStatus | null;
   recommendations: string[];
+  errorMessage: string | null;
   createdAt: string;
   updatedAt: string;
 }

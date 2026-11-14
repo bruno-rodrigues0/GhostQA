@@ -145,3 +145,38 @@ body {
     @apply font-sans;
   }
 }
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #1e293b !important;
+    print-color-adjust: economy;
+  }
+
+  main {
+    background: #fff !important;
+    color: #1e293b !important;
+  }
+
+  main * {
+    color: #1e293b !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: none !important;
+  }
+
+  main section,
+  main aside,
+  main article {
+    break-inside: avoid;
+  }
+
+  main img {
+    max-height: 180mm;
+    object-fit: contain;
+  }
+}
