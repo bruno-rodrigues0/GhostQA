@@ -9,6 +9,8 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 RUN npx playwright install --with-deps chromium \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends gosu \
     && rm -rf /var/lib/apt/lists/*
 
 COPY . .
@@ -20,11 +22,12 @@ RUN DATABASE_URL="postgresql://ghostqa:ghostqa@localhost:5432/ghostqa?schema=pub
        BETTER_AUTH_URL="http://localhost:3001" \
        npm run build
 
-RUN mkdir -p /app/data /app/public/runs \
-    && chown -R node:node /app/.next /app/data /app/public/runs
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
-USER node
+RUN chmod 755 /usr/local/bin/docker-entrypoint \
+    && mkdir -p /app/data/private-runs /app/data/runs /app/public/runs \
+    && chown -R node:node /app/.next /app/data /app/public/runs
 
 EXPOSE 3001
 
-CMD ["sh", "-c", "npm run db:migrate && npm run start"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]

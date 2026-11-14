@@ -21,6 +21,9 @@ privadas permanecem nas pastas locais `data/` e `public/runs/`. As migrations
 Prisma são aplicadas automaticamente antes da inicialização da aplicação.
 Como o navegador Playwright também roda dentro do container, use a porta interna
 3001 (por exemplo, `http://localhost:3001`) ao auditar a própria instalação.
+Na inicialização, o container corrige a propriedade das pastas de dados montadas
+e executa a aplicação como usuário não privilegiado, evitando erros `EACCES` em
+clones novos.
 Para executar em segundo plano, use `docker compose up --build -d`; para parar,
 `docker compose down`. Os dados do banco permanecem após `docker compose down`;
 não use `docker compose down -v` se quiser preservá-los.
