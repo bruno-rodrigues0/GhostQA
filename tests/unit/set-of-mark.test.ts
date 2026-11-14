@@ -19,6 +19,10 @@ function setBounds(
       bottom: bounds.y + bounds.height,
       toJSON: () => ({}),
     }) as DOMRect;
+  element.getClientRects = () =>
+    (element.getBoundingClientRect().width > 0
+      ? [element.getBoundingClientRect()]
+      : []) as unknown as DOMRectList;
 }
 
 afterEach(() => {
@@ -35,6 +39,12 @@ describe("Set-of-Mark", () => {
       <div role="button">Abrir</div>
       <button disabled>Indisponível</button>
       <button id="hidden">Oculto</button>
+      <div id="hidden-parent" style="display: none">
+        <a id="hidden-child" href="/hidden">Link oculto no menu</a>
+      </div>
+      <div id="aria-hidden-parent" aria-hidden="true">
+        <button id="aria-hidden-child">Ação oculta</button>
+      </div>
       <button id="outside">Fora da viewport</button>
     `;
 
@@ -64,6 +74,18 @@ describe("Set-of-Mark", () => {
       width: 100,
       height: 30,
     });
+    setBounds(document.querySelector("#hidden-child")!, {
+      x: 10,
+      y: 10,
+      width: 100,
+      height: 30,
+    });
+    setBounds(document.querySelector("#aria-hidden-child")!, {
+      x: 10,
+      y: 10,
+      width: 100,
+      height: 30,
+    });
 
     const marked = injectSetOfMark(document);
 
@@ -81,6 +103,11 @@ describe("Set-of-Mark", () => {
       .toBe(false);
     expect(document.querySelector("#outside")?.hasAttribute("data-ghost-id"))
       .toBe(false);
+    expect(document.querySelector("#hidden-child")?.hasAttribute("data-ghost-id"))
+      .toBe(false);
+    expect(
+      document.querySelector("#aria-hidden-child")?.hasAttribute("data-ghost-id"),
+    ).toBe(false);
   });
 
   it("remove estilos, marcadores e IDs sem deixar overlay no DOM", () => {

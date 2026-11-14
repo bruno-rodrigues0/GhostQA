@@ -61,12 +61,25 @@ export function injectSetOfMark(doc: Document): MarkedElementInfo[] {
     )
     .forEach((element) => {
       const bounds = element.getBoundingClientRect();
-      const computedStyle = view.getComputedStyle(element);
-      const isVisible =
-        computedStyle.display !== "none" &&
-        computedStyle.visibility !== "hidden" &&
-        computedStyle.visibility !== "collapse" &&
-        (!computedStyle.opacity || Number(computedStyle.opacity) !== 0) &&
+      let isVisible =
+        !element.hasAttribute("disabled") && !element.matches(":disabled");
+      let ancestor: HTMLElement | null = element;
+      while (isVisible && ancestor) {
+        const computedStyle = view.getComputedStyle(ancestor);
+        isVisible =
+          !ancestor.hidden &&
+          ancestor.getAttribute("aria-hidden") !== "true" &&
+          computedStyle.display !== "none" &&
+          computedStyle.visibility !== "hidden" &&
+          computedStyle.visibility !== "collapse" &&
+          computedStyle.pointerEvents !== "none" &&
+          (!computedStyle.opacity || Number(computedStyle.opacity) !== 0);
+        ancestor = ancestor.parentElement;
+      }
+
+      isVisible =
+        isVisible &&
+        element.getClientRects().length > 0 &&
         bounds.width > 0 &&
         bounds.height > 0 &&
         bounds.right > 0 &&
@@ -74,7 +87,7 @@ export function injectSetOfMark(doc: Document): MarkedElementInfo[] {
         bounds.left < width &&
         bounds.top < height;
 
-      if (!isVisible || element.hasAttribute("disabled")) {
+      if (!isVisible) {
         return;
       }
 

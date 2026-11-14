@@ -3,6 +3,13 @@ Você é um Engenheiro de Software Sênior e Product Designer especialista em ap
 
 O produto deve ter estética de ferramenta de observabilidade e engenharia moderna (inspirado em Linear, Sentry, Vercel e PostHog) — **nunca** deve parecer um chatbot genérico ou ter "cara de IA". Toda a interface, textos, personas e relatórios devem estar em **Português (PT-BR)**.
 
+## Autenticação e Planos
+- Usar Better Auth com cadastro/login por e-mail e senha, PostgreSQL via Prisma e sessão HTTP-only.
+- O plano Free é padrão. Pro é concedido/revogado manualmente por administradores allowlisted em `ADMIN_EMAILS`; o plano nunca é aceito do payload do cliente.
+- Todas as auditorias e screenshots devem estar vinculadas à conta e ser acessíveis somente pelo proprietário.
+- Limites e capacidades são aplicados no servidor e cotas mensais são por usuário.
+- Migrar os arquivos JSON e screenshots existentes para a primeira conta administradora usando `npm run migrate:legacy-runs -- --apply` após simular a migração.
+
 ---
 
 # Stack Tecnológica Obrigatória
@@ -12,7 +19,8 @@ O produto deve ter estética de ferramenta de observabilidade e engenharia moder
 - **Inteligência Artificial (Visão + Decisão):** OpenRouter API usando o SDK da OpenAI (`npm install openai`). 
   - Configurar a inicialização com: `baseURL: "https://openrouter.ai/api/v1"`
   - Carregar a credencial pela variável `OPENROUTER_API_KEY`.
-  - Modelo a ser utilizado na chamada: O modelo flex/hydrogen configurado via OpenRouter (ex: `google/gemini-1.5-pro` ou string customizada).
+  - Modelo a ser utilizado na chamada: `nvidia/nemotron-3.5-super-vl:free`, configurado por `OPENROUTER_MODEL`. Esse modelo NVIDIA aceita imagens, necessário para a análise dos screenshots do Set-of-Mark, e suporta saída estruturada em JSON.
+  - O prefixo `nvidia/` identifica o modelo/publicador; não force o provedor de endpoint na requisição, pois a OpenRouter seleciona o endpoint disponível para a variante gratuita.
   - Enviar o modelo solicitado na chamada e configurar `response_format: { type: "json_object" }`.
 - **Persistência (Rápida e Zero-Config para MVP):** SQLite com Prisma ou armazenamento estruturado local em JSON + salvamento das screenshots em `/public/runs/[sessionId]/` para carregamento instantâneo no frontend
 
@@ -90,7 +98,7 @@ Crie um serviço isolado em `src/lib/ghost-engine.ts` que execute o seguinte loo
 
 1. **Nova Missão (`/`) — Estilo "Mission Control":**
    - Formulário estruturado e limpo: Campo de URL (com botões de preenchimento rápido de exemplos reais), Campo de Objetivo da Missão (ex: *"Encontrar os preços e iniciar o cadastro"*), Seletor de Dispositivo (Desktop / Mobile), Seletor de Personas (cards selecionáveis + botão `+ Nova Persona` do Pro).
-   - Histórico recente de auditorias logo abaixo, mostrando URL, Score de Fricção com badge colorido, status e data.
+   - Tela inicial dedicada à criação de missão; o histórico deve ficar em uma página separada (`/audits`), mostrando URL, objetivo, Score de Fricção com badge colorido, status e data.
 
 2. **Execução ao Vivo (`/runs/[id]` enquanto `status === 'running'`):**
    - Tela dividida: à esquerda, preview ao vivo do último screenshot capturado com indicador pulsante `"Agente navegando..."`; à direita, feed em tempo real do monólogo interno da persona, barra de frustração atual e contador de passos (`Passo 2 de 5`). Atualizar via polling rápido (1.5s) ou SSE.
@@ -108,8 +116,16 @@ Crie um serviço isolado em `src/lib/ghost-engine.ts` que execute o seguinte loo
 # Ordem de Execução Sugerida
 Construa o projeto de forma incremental e testável:
 1. Configure a estrutura Next.js + Tailwind + Shadcn/UI, o tema visual ("Mission Control" dark/slate refinado) e os tipos TypeScript (`Session`, `Step`, `Persona`, `TechLog`).
-2. Implemente o motor Playwright + injeção Set-of-Mark + integração estruturada com OpenRouter via SDK da OpenAI (`src/lib/ghost-engine.ts`) e a API Route `POST /api/runs` + `GET /api/runs/[id]`.
+2. Implemente o motor Playwright + injeção Set-of-Mark + integração estruturada com OpenRouter via SDK da OpenAI (`src/lib/ghost-engine.ts`) e as API Routes `POST /api/runs`, `GET /api/runs/[id]` e `POST /api/runs/[id]/retry`. A repetição reutiliza a sessão e sua configuração, limpa os resultados anteriores, mantém o mesmo ID e não consome nova cota mensal; sessões pendentes ou em execução não podem ser repetidas.
 3. Construa a tela inicial (`/`) com seletor de personas, regras Freemium/Pro, modal de upgrade e histórico.
 4. Construa a tela de execução ao vivo e o dashboard completo de relatório (`/runs/[id]`) com timeline visual, Raio-X técnico e exportação Markdown.
 
 Implemente as etapas de forma incremental, respeitando o status registrado em `PROGRESS.md`.
+
+## Execução e Persistência em Docker
+
+- `docker compose up --build` inicia a aplicação GhostQA e o PostgreSQL.
+- O PostgreSQL usa volume persistente; auditorias locais e screenshots usam `data/` e `public/runs/`.
+- O container da aplicação aplica as migrations Prisma antes de iniciar o Next.js.
+- Chromium e dependências do Playwright são instalados na imagem; caminhos absolutos da máquina host não são usados.
+- `OPENROUTER_API_KEY`, `ADMIN_EMAILS` e as credenciais SMTP são configurações locais no `.env`; nunca devem ser incorporadas à imagem.

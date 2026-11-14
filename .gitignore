@@ -17,6 +17,8 @@
 /.next/
 /out/
 /public/runs/
+/data/runs/
+/data/private-runs/
 
 # production
 /build
