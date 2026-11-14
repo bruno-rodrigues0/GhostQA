@@ -6,17 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:playwright": "RUN_PLAYWRIGHT_INTEGRATION=1 vitest run tests/integration/ghost-engine.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
-    "@google/genai": "^3.3.0",
     "@tailwindcss/postcss": "^4.3.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cn": "^0.5.2",
     "lucide-react": "^1.73.0",
     "next": "^15.5.29",
+    "openai": "^7.57.0",
     "playwright": "^1.65.1",
     "postcss": "^8.5.33",
     "react": "19.3.0",
@@ -32,7 +34,9 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "^15.5.29",
+    "jsdom": "^31.0.1",
     "tailwindcss": "4.3.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.7"
   }
 }

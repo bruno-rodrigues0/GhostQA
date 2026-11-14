@@ -9,7 +9,11 @@ O produto deve ter estética de ferramenta de observabilidade e engenharia moder
 - **Framework:** Next.js 14+ (App Router) com TypeScript
 - **Estilização & UI:** Tailwind CSS + Shadcn/UI + Lucide Icons
 - **Automação de Browser:** Playwright (`playwright` em Node.js) rodando em modo headless no backend (API Routes / Server Actions)
-- **Inteligência Artificial (Visão + Decisão):** Google Gemini API (`@google/genai` usando `gemini-2.5-flash` com `responseSchema` para Structured Outputs) — deixar preparado via `.env` (`GEMINI_API_KEY`)
+- **Inteligência Artificial (Visão + Decisão):** OpenRouter API usando o SDK da OpenAI (`npm install openai`). 
+  - Configurar a inicialização com: `baseURL: "https://openrouter.ai/api/v1"`
+  - Carregar a credencial pela variável `OPENROUTER_API_KEY`.
+  - Modelo a ser utilizado na chamada: O modelo flex/hydrogen configurado via OpenRouter (ex: `google/gemini-1.5-pro` ou string customizada).
+  - Enviar o modelo solicitado na chamada e configurar `response_format: { type: "json_object" }`.
 - **Persistência (Rápida e Zero-Config para MVP):** SQLite com Prisma ou armazenamento estruturado local em JSON + salvamento das screenshots em `/public/runs/[sessionId]/` para carregamento instantâneo no frontend
 
 ---
@@ -49,9 +53,9 @@ Crie um serviço isolado em `src/lib/ghost-engine.ts` que execute o seguinte loo
    - Atribui um atributo `data-ghost-id="1..N"` a cada elemento e renderiza uma overlay visual de alto contraste (borda colorida + etiqueta numérica `[1]`, `[2]`, etc.) no canto superior esquerdo de cada elemento.
    - Tira o screenshot anotado (`step-X-annotated.png`).
 
-3. **Tomada de Decisão Multimodal (Gemini 2.5 Flash):**
-   - Envia o screenshot anotado + perfil da Persona + Objetivo da Missão + histórico resumido dos passos anteriores para o modelo.
-   - Exige resposta estritamente no seguinte JSON Schema:
+3. **Tomada de Decisão Multimodal (OpenRouter):**
+   - Envia o screenshot anotado + perfil da Persona + Objetivo da Missão + histórico resumido dos passos anteriores para o modelo configurado via OpenRouter.
+   - Exige resposta JSON (`response_format: { type: "json_object" }`) compatível com o seguinte schema:
      ```json
      {
        "pensamento_persona": "Monólogo interno realista da persona sobre o que vê na tela",
@@ -104,8 +108,8 @@ Crie um serviço isolado em `src/lib/ghost-engine.ts` que execute o seguinte loo
 # Ordem de Execução Sugerida
 Construa o projeto de forma incremental e testável:
 1. Configure a estrutura Next.js + Tailwind + Shadcn/UI, o tema visual ("Mission Control" dark/slate refinado) e os tipos TypeScript (`Session`, `Step`, `Persona`, `TechLog`).
-2. Implemente o motor Playwright + injeção Set-of-Mark + integração estruturada com Gemini (`src/lib/ghost-engine.ts`) e a API Route `POST /api/runs` + `GET /api/runs/[id]`.
+2. Implemente o motor Playwright + injeção Set-of-Mark + integração estruturada com OpenRouter via SDK da OpenAI (`src/lib/ghost-engine.ts`) e a API Route `POST /api/runs` + `GET /api/runs/[id]`.
 3. Construa a tela inicial (`/`) com seletor de personas, regras Freemium/Pro, modal de upgrade e histórico.
 4. Construa a tela de execução ao vivo e o dashboard completo de relatório (`/runs/[id]`) com timeline visual, Raio-X técnico e exportação Markdown.
 
-Comece agora pela **Etapa 1** e me avise quando concluir para avançarmos para a **Etapa 2**.
+Implemente as etapas de forma incremental, respeitando o status registrado em `PROGRESS.md`.
