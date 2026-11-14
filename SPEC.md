@@ -126,6 +126,7 @@ Implemente as etapas de forma incremental, respeitando o status registrado em `P
 
 - `docker compose up --build` inicia a aplicação GhostQA e o PostgreSQL.
 - O PostgreSQL usa volume persistente; auditorias locais e screenshots usam `data/` e `public/runs/`.
+- O Mailpit captura mensagens SMTP no ambiente local e disponibiliza a caixa de entrada em `http://localhost:8025`; configure um provedor SMTP externo em produção.
 - O container da aplicação aplica as migrations Prisma antes de iniciar o Next.js.
 - Chromium e dependências do Playwright são instalados na imagem; caminhos absolutos da máquina host não são usados.
 - `OPENROUTER_API_KEY`, `ADMIN_EMAILS` e as credenciais SMTP são configurações locais no `.env`; nunca devem ser incorporadas à imagem.

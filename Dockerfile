@@ -17,7 +17,7 @@ RUN DATABASE_URL="postgresql://ghostqa:ghostqa@localhost:5432/ghostqa?schema=pub
     npm run db:generate \
     && DATABASE_URL="postgresql://ghostqa:ghostqa@localhost:5432/ghostqa?schema=public" \
        BETTER_AUTH_SECRET="build-only-secret-that-is-not-used-at-runtime" \
-       BETTER_AUTH_URL="http://localhost:3000" \
+       BETTER_AUTH_URL="http://localhost:3001" \
        npm run build
 
 RUN mkdir -p /app/data /app/public/runs \
@@ -25,6 +25,6 @@ RUN mkdir -p /app/data /app/public/runs \
 
 USER node
 
-EXPOSE 3000
+EXPOSE 3001
 
 CMD ["sh", "-c", "npm run db:migrate && npm run start"]

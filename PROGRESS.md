@@ -12,7 +12,7 @@
 - [x] Docker Compose com PostgreSQL, Chromium Playwright, persistência e migrations automáticas
 
 ## ⚙️ Configuração necessária para ativar autenticação
-- [ ] Configurar chave OpenRouter, allowlist administrativa e SMTP no arquivo `.env`
+- [ ] Configurar allowlist administrativa e SMTP de produção no arquivo `.env` (SMTP local de desenvolvimento usa Mailpit)
 - [ ] Criar e verificar a conta admin; simular e aplicar a migração de sessões legadas com `docker compose exec app npm run migrate:legacy-runs`
 
 ## 🐛 Bugs Conhecidos e Workarounds

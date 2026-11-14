@@ -19,6 +19,8 @@ Abra [http://localhost:3001](http://localhost:3001). O PostgreSQL fica persistid
 no volume Docker `postgres_data`; arquivos de auditoria legados e screenshots
 privadas permanecem nas pastas locais `data/` e `public/runs/`. As migrations
 Prisma são aplicadas automaticamente antes da inicialização da aplicação.
+Como o navegador Playwright também roda dentro do container, use a porta interna
+3001 (por exemplo, `http://localhost:3001`) ao auditar a própria instalação.
 Para executar em segundo plano, use `docker compose up --build -d`; para parar,
 `docker compose down`. Os dados do banco permanecem após `docker compose down`;
 não use `docker compose down -v` se quiser preservá-los.
@@ -43,20 +45,23 @@ Para desenvolvimento local, use `DATABASE_URL` apontando para
 - **OpenRouter:** preencha `OPENROUTER_API_KEY` com uma chave válida para executar
   auditorias com análise visual. O modelo padrão multimodal é
   `nvidia/nemotron-3.5-super-vl:free`.
-- **E-mail:** configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` e
-  `SMTP_FROM` para habilitar verificação de e-mail e redefinição de senha.
+- **E-mail no ambiente local:** o Compose inicia o Mailpit; mensagens de cadastro
+  e redefinição de senha ficam disponíveis em
+  [http://localhost:8025](http://localhost:8025). O padrão é
+  `SMTP_HOST=mailpit`, `SMTP_PORT=1025`, sem usuário/senha. Esse serviço apenas
+  captura e-mails e não os entrega a caixas externas.
 - **Administrador:** defina `ADMIN_EMAILS` com o e-mail da conta que terá acesso
   administrativo. Cadastre e verifique essa conta após iniciar a aplicação.
-- **Produção:** altere `BETTER_AUTH_URL` para a origem HTTPS pública exata e use
-  credenciais fortes e únicas em `POSTGRES_PASSWORD` e `BETTER_AUTH_SECRET`.
+- **Produção:** altere `BETTER_AUTH_URL` para a origem HTTPS pública exata, use
+  credenciais fortes e únicas em `POSTGRES_PASSWORD` e `BETTER_AUTH_SECRET`, e
+  configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` e `SMTP_FROM`
+  para um provedor real de e-mail.
 
 Crie sua conta pelo formulário de cadastro. Para conceder acesso administrativo
 à primeira conta, inclua seu e-mail em `ADMIN_EMAILS` antes de iniciar o app.
 O painel `/admin` permite conceder e revogar manualmente o plano Pro; não há
 gateway de pagamento integrado. A autenticação usa e-mail e senha com mínimo
-de 12 caracteres, verificação de e-mail e recuperação de senha. Configure
-`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` e `SMTP_FROM` para
-habilitar os e-mails antes de cadastrar contas.
+de 12 caracteres, verificação de e-mail e recuperação de senha.
 
 ## Stack base
 

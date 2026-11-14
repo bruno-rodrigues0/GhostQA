@@ -24,5 +24,6 @@ O modelo multimodal configurado para o GhostQA é o NVIDIA Nemotron 3.5 Super VL
 # Docker
 - Execute o sistema e o PostgreSQL com `docker compose up --build`.
 - As migrations Prisma devem ser aplicadas no startup do container da aplicação.
+- Em desenvolvimento, use o Mailpit do Compose para capturar e-mails; não configure credenciais SMTP de produção no ambiente local.
 - Nunca copie `.env`, chaves ou segredos para a imagem; preserve valores locais existentes ao alterar `.env`.
 - Use o Chromium instalado na imagem Docker para o Playwright; não dependa de caminhos absolutos da máquina host.
