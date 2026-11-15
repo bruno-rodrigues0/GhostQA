@@ -21,6 +21,13 @@ export interface RequestPersonaDecisionOptions {
   persona: Persona;
   objective: string;
   history: string[];
+  availableElements?: Array<{
+    id: number;
+    tagName: string;
+    label: string;
+    bounds: { x: number; y: number; width: number; height: number };
+    clickPoint: { x: number; y: number };
+  }>;
 }
 
 const validActions: readonly StepAction[] = [
@@ -166,6 +173,11 @@ export async function requestPersonaDecision(
       ? [`Nível técnico: ${options.persona.technicalLevel}`]
       : []),
     `Objetivo da missão: ${options.objective}`,
+    ...(options.availableElements === undefined
+      ? []
+      : [
+          `Elementos interativos realmente visíveis e clicáveis nesta imagem: ${JSON.stringify(options.availableElements)}.`,
+        ]),
     `Histórico resumido: ${JSON.stringify(options.history)}`,
   ].join("\n");
 
@@ -174,6 +186,14 @@ export async function requestPersonaDecision(
     "Responda somente com um objeto JSON válido, sem markdown, comentários ou chaves adicionais.",
     "Use exatamente estas chaves e tipos: pensamento_persona (string curta em primeira pessoa), nivel_frustracao (inteiro de 1 a 10), acao (click, type, scroll, finish ou give_up), elemento_id (inteiro marcado na imagem ou null), texto_digitado (string ou null), problema_ux_encontrado (string ou null), severidade_problema (baixa, media, alta ou nenhuma).",
     "Não omita nenhuma chave. Em click e type, elemento_id deve ser um elemento marcado existente. Em type, texto_digitado deve ser uma string. Use finish ao cumprir o objetivo e give_up ao desistir.",
+    "Se uma interação anterior não foi confirmada pela automação, não a descreva como falha do site nem registre um problema de UX com base apenas nisso. Só relate defeito após observar evidência do comportamento do site.",
+    "Se a automação informar timeout, não repita a mesma interação sem reavaliar a nova captura.",
+    "Nunca clique, preencha ou tente resolver CAPTCHA, reCAPTCHA, hCaptcha, Turnstile ou qualquer verificação humana/anti-bot. Se aparecer, encerre a jornada sem atribuir um defeito de UX ao site.",
+    ...(options.availableElements === undefined
+      ? []
+      : [
+          `Para esta imagem, escolha elemento_id somente entre os objetos listados acima. Use o rótulo e a posição para selecionar o alvo correto. Nunca escolha elementos encobertos ou invente/reutilize IDs que não estejam na lista.`,
+        ]),
     `Exemplo estrutural obrigatório: ${JSON.stringify({
       pensamento_persona: "Vou selecionar a opção para continuar.",
       nivel_frustracao: 2,

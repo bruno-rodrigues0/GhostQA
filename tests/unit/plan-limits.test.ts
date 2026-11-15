@@ -6,6 +6,7 @@ import {
   hideFreeTechnicalLogs,
   MonthlySessionLimitError,
 } from "../../src/lib/plan-limits";
+import { PLAN_LIMITS } from "../../src/lib/plan-constants";
 import type { Session } from "../../src/lib/types";
 
 function makeSession(id: string, createdAt: string, plan: Session["plan"] = "free"): Session {
@@ -36,6 +37,11 @@ function makeSession(id: string, createdAt: string, plan: Session["plan"] = "fre
 }
 
 describe("plan limits", () => {
+  it("allows 12 navigation steps on Free and 30 on Pro", () => {
+    expect(PLAN_LIMITS.free.steps).toBe(12);
+    expect(PLAN_LIMITS.pro.steps).toBe(30);
+  });
+
   it("counts every session started in the current UTC month, including failed runs", () => {
     const sessions = [
       makeSession("1", "2026-11-01T00:00:00.000Z"),
@@ -99,5 +105,15 @@ describe("plan limits", () => {
         },
       ]),
     ).toThrow("O plano Free permite somente personas padrão.");
+    expect(() =>
+      assertPlanCapabilities("pro", "desktop", [
+        ...[
+          { id: "one", name: "One", description: "One." },
+          { id: "two", name: "Two", description: "Two." },
+          { id: "three", name: "Three", description: "Three." },
+        ],
+        { id: "four", name: "Four", description: "Four." },
+      ]),
+    ).toThrow("O plano Pro permite até 3 persona(s) por missão.");
   });
 });

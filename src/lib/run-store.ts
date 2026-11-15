@@ -118,6 +118,7 @@ function isSession(value: unknown, expectedId: string): value is Session {
     (typeof value.frictionScore === "number" || value.frictionScore === null) &&
     (value.missionStatus === "completed" ||
       value.missionStatus === "abandoned" ||
+      value.missionStatus === "blocked" ||
       value.missionStatus === null) &&
     Array.isArray(value.recommendations) &&
     value.recommendations.every((item) => typeof item === "string") &&

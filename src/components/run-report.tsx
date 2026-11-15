@@ -354,6 +354,15 @@ export function RunReport({ sessionId }: RunReportProps) {
             {session.errorMessage ?? "Ocorreu uma falha durante a auditoria."}
           </div>
         )}
+        {session.missionStatus === "blocked" && (
+          <div
+            role="status"
+            className="mt-5 flex items-start gap-2 rounded-xl border border-amber-300/15 bg-amber-300/[0.05] px-4 py-3 text-xs leading-5 text-amber-100"
+          >
+            <CircleAlert size={14} className="mt-0.5 shrink-0" />
+            A auditoria parou diante de uma verificação humana. Resolva-a manualmente no site e repita a auditoria; o GhostQA não tenta interagir com CAPTCHAs.
+          </div>
+        )}
         {retryError && (
           <div
             role="alert"

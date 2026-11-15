@@ -25,12 +25,20 @@ export function getSessionStatusLabel(session: Session): string {
   if (session.status === "running") {
     return "Agente navegando";
   }
+  if (session.missionStatus === "blocked") {
+    return "Bloqueada por verificação humana";
+  }
   return session.missionStatus === "completed" ? "Concluída" : "Abandonada";
 }
 
-export function getPrioritizedSteps(steps: Step[]): Step[] {
+export function getPrioritizedSteps(
+  steps: Step[],
+): (Step & { uxProblem: string })[] {
   return steps
-    .filter((step) => step.uxProblem && step.severity !== "none")
+    .filter(
+      (step): step is Step & { uxProblem: string } =>
+        Boolean(step.uxProblem) && step.severity !== "none",
+    )
     .slice()
     .sort(
       (left, right) =>
@@ -64,7 +72,7 @@ export function createMarkdownReport(session: Session): string {
       lines.push(
         `### Prioridade ${getSeverityLabel(step.severity)} — Passo ${step.order}`,
         "",
-        step.uxProblem ?? "",
+        step.uxProblem,
         "",
         `**Persona:** ${session.personas.find(({ id }) => id === step.personaId)?.name ?? step.personaId}`,
         "",

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   createMarkdownReport,
   getPrioritizedSteps,
+  getSeverityLabel,
   getSessionStatusLabel,
 } from "../../src/lib/report";
 import type { Session, Step } from "../../src/lib/types";
@@ -56,6 +57,13 @@ function makeSession(): Session {
 }
 
 describe("UX report helpers", () => {
+  it("labels every issue severity", () => {
+    expect(getSeverityLabel("high")).toBe("Alta");
+    expect(getSeverityLabel("medium")).toBe("Média");
+    expect(getSeverityLabel("low")).toBe("Baixa");
+    expect(getSeverityLabel("none")).toBe("Sem alerta");
+  });
+
   it("prioritizes UX findings by severity then step order", () => {
     const steps = [
       makeStep("low", "low", 1),
@@ -77,8 +85,19 @@ describe("UX report helpers", () => {
   it("labels completed mission outcomes", () => {
     const session = makeSession();
     expect(getSessionStatusLabel(session)).toBe("Concluída");
+    session.status = "failed";
+    expect(getSessionStatusLabel(session)).toBe("Falha na execução");
+    session.status = "pending";
+    expect(getSessionStatusLabel(session)).toBe("Na fila");
+    session.status = "running";
+    expect(getSessionStatusLabel(session)).toBe("Agente navegando");
+    session.status = "completed";
     session.missionStatus = "abandoned";
     expect(getSessionStatusLabel(session)).toBe("Abandonada");
+    session.missionStatus = "blocked";
+    expect(getSessionStatusLabel(session)).toBe(
+      "Bloqueada por verificação humana",
+    );
   });
 
   it("formats an in-progress Markdown report without a misleading score suffix", () => {
@@ -92,4 +111,65 @@ describe("UX report helpers", () => {
     expect(report).toContain("## Plano de ação UX");
     expect(report).toContain("## Raio-X técnico");
   });
+
+  it("formats mobile reports with findings, recommendations and technical logs", () => {
+    const session = makeSession();
+    session.viewport = "mobile";
+    session.frictionScore = 74;
+    session.steps = [
+      makeStep("known", "high", 2, "O formulário não explica o erro."),
+      {
+        ...makeStep("unknown", "low", 3, "Campo sem rótulo."),
+        personaId: "removed-persona",
+      },
+    ];
+    session.recommendations = ["Adicionar uma mensagem de validação clara."];
+    session.techLogs = [
+      {
+        id: "http-404",
+        type: "http",
+        message: "Resposta HTTP 404",
+        status: 404,
+        url: "https://example.com/missing",
+        createdAt: "2026-11-14T00:00:00.000Z",
+      },
+      {
+        id: "console",
+        type: "console",
+        message: "Aviso sem status nem URL",
+        createdAt: "2026-11-14T00:00:00.000Z",
+      },
+      {
+        id: "http-0",
+        type: "http",
+        message: "Status zero não deve ser exibido",
+        status: 0,
+        createdAt: "2026-11-14T00:00:00.000Z",
+      },
+    ];
+
+    const report = createMarkdownReport(session);
+
+    expect(report).toContain("**Dispositivo:** Mobile");
+    expect(report).toContain("**Score de fricção:** 74/100");
+    expect(report).toContain("### Prioridade Alta — Passo 2");
+    expect(report).toContain("**Persona:** O Apressado");
+    expect(report).toContain("**Persona:** removed-persona");
+    expect(report).toContain("1. Adicionar uma mensagem de validação clara.");
+    expect(report).toContain("(HTTP 404) — https://example.com/missing");
+    expect(report).toContain("Aviso sem status nem URL");
+    expect(report).not.toContain("Status zero não deve ser exibido (HTTP 0)");
+  });
+
+  it("reports empty recommendations and technical logs", () => {
+    const session = makeSession();
+    session.steps = [makeStep("none", "none", 1)];
+
+    const report = createMarkdownReport(session);
+
+    expect(report).toContain("Nenhum problema de UX foi registrado.");
+    expect(report).toContain("Nenhuma recomendação disponível.");
+    expect(report).toContain("Nenhum erro técnico foi capturado.");
+  });
+
 });

@@ -5,12 +5,12 @@ export const PLAN_LIMITS = {
   free: {
     monthlySessions: 5,
     personas: 1,
-    steps: 5,
+    steps: 12,
   },
   pro: {
     monthlySessions: 100,
     personas: 3,
-    steps: 12,
+    steps: 30,
   },
 } as const;
 

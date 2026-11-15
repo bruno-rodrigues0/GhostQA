@@ -32,7 +32,7 @@ Implemente a lógica de planos diretamente na experiência do produto (sem gatew
 1. **Plano Free (Hobby / Validação):**
    - Limite de **5 sessões/mês** (exibir contador no header/sidebar, ex: `2/5 testes usados`).
    - Apenas **1 persona padrão** por teste.
-   - Profundidade máxima de **5 passos** por navegação.
+   - Profundidade máxima de **12 passos** por navegação.
    - Apenas viewport **Desktop (`1280x800`)** (opção Mobile exibe badge `PRO` e abre modal de upgrade ao clicar).
    - Relatório visual padrão (sem exportação Markdown/PDF e com aba de Raio-X Técnico parcialmente bloqueada como preview).
 
@@ -40,7 +40,7 @@ Implemente a lógica de planos diretamente na experiência do produto (sem gatew
    - **100 sessões/mês**.
    - Até **3 personas simultâneas** na mesma missão (comparativo lado a lado).
    - Criação de **Personas Customizadas** (usuário escreve nome, idade, contexto e nível técnico).
-   - Profundidade de até **12 passos** por navegação.
+   - Profundidade de até **30 passos** por navegação.
    - Dispositivos **Desktop (`1280x800`) e Mobile (`390x844`)**.
    - **Raio-X Técnico completo** (erros de console JS e requisições HTTP 4xx/5xx) + **Exportação do Relatório em Markdown/PDF**.
 
@@ -57,8 +57,12 @@ Crie um serviço isolado em `src/lib/ghost-engine.ts` que execute o seguinte loo
    - Acessa a URL alvo e aguarda estabilização (`networkidle` com timeout de segurança de 10s).
 
 2. **Injeção Set-of-Mark (SoM):**
-   - Injeta um script no DOM que localiza todos os elementos interativos visíveis na viewport atual (`a`, `button`, `input`, `textarea`, `select`, `[role="button"]`).
-   - Atribui um atributo `data-ghost-id="1..N"` a cada elemento e renderiza uma overlay visual de alto contraste (borda colorida + etiqueta numérica `[1]`, `[2]`, etc.) no canto superior esquerdo de cada elemento.
+   - Percorre o documento principal, frames e shadow roots abertos ou fechados para localizar elementos interativos visíveis e habilitados, preservando o modo original dos componentes.
+   - Só marca elementos com ao menos um ponto de clique desobstruído no hit-test do navegador; a automação clica nesse ponto validado, não em uma coordenada presumida.
+   - Atribui IDs globais `data-ghost-id="1..N"` e renderiza overlays visuais de alto contraste com a etiqueta numérica correspondente.
+   - Timeouts de interação são registrados como falhas da automação, não como defeitos de UX do site. Após três interações consecutivas sem confirmação, a persona é encerrada como desistente.
+   - Ao detectar CAPTCHA ou verificação humana, interrompe a automação sem clicar nem tentar resolver o desafio, registrando a missão como bloqueada e solicitando intervenção humana antes de uma nova tentativa.
+   - Erros transitórios `ERR_NAME_NOT_RESOLVED` durante a navegação inicial são repetidos até três tentativas com espera progressiva; se persistirem, a execução termina com uma mensagem explícita de DNS/conectividade e registro no Raio-X.
    - Tira o screenshot anotado (`step-X-annotated.png`).
 
 3. **Tomada de Decisão Multimodal (OpenRouter):**
@@ -80,7 +84,7 @@ Crie um serviço isolado em `src/lib/ghost-engine.ts` que execute o seguinte loo
    - Remove as tags visuais do DOM, desenha um marcador circular no centro do elemento alvo (para mostrar onde o clique aconteceu) e salva o screenshot limpo (`step-X-clean.png`).
    - Executa a ação no Playwright (`click` no `[data-ghost-id="X"]`, `fill` se `type`, `mouse.wheel` se `scroll`).
    - Salva o passo no estado da sessão para consumo em tempo real pelo frontend.
-   - Repete até `acao === 'finish'`, `acao === 'give_up'` ou atingir o limite de passos do plano (`5` ou `12`).
+   - Repete até `acao === 'finish'`, `acao === 'give_up'` ou atingir o limite de passos do plano (`12` ou `30`).
 
 5. **Síntese Final:**
    - Ao terminar a sessão, gera um resumo consolidado contendo: **Score de Fricção (0 a 100)**, status da missão (`Concluída` ou `Abandonada`), e uma lista priorizada de **Recomendações Práticas de Correção**.
@@ -101,7 +105,7 @@ Crie um serviço isolado em `src/lib/ghost-engine.ts` que execute o seguinte loo
    - Tela inicial dedicada à criação de missão; o histórico deve ficar em uma página separada (`/audits`), mostrando URL, objetivo, Score de Fricção com badge colorido, status e data.
 
 2. **Execução ao Vivo (`/runs/[id]` enquanto `status === 'running'`):**
-   - Tela dividida: à esquerda, preview ao vivo do último screenshot capturado com indicador pulsante `"Agente navegando..."`; à direita, feed em tempo real do monólogo interno da persona, barra de frustração atual e contador de passos (`Passo 2 de 5`). Atualizar via polling rápido (1.5s) ou SSE.
+   - Tela dividida: à esquerda, preview ao vivo do último screenshot capturado com indicador pulsante `"Agente navegando..."`; à direita, feed em tempo real do monólogo interno da persona, barra de frustração atual e contador de passos (`Passo 2 de 12`, Free; `Passo 2 de 30`, Pro). Atualizar via polling rápido (1.5s) ou SSE.
 
 3. **Relatório de Auditoria UX (`/runs/[id]` quando `status === 'completed'`):**
    - **Header do Relatório:** URL testada, dispositivo, persona(s), Score de Fricção (0-100) em destaque, status da missão e botão `Exportar Relatório (.md)` (Pro).

@@ -48,6 +48,8 @@ Para desenvolvimento local, use `DATABASE_URL` apontando para
 - **OpenRouter:** preencha `OPENROUTER_API_KEY` com uma chave válida para executar
   auditorias com análise visual. O modelo padrão multimodal é
   `nvidia/nemotron-3.5-super-vl:free`.
+- **Profundidade:** o plano Free permite até 12 passos por auditoria; o Pro,
+  até 30 passos.
 - **E-mail no ambiente local:** o Compose inicia o Mailpit; mensagens de cadastro
   e redefinição de senha ficam disponíveis em
   [http://localhost:8025](http://localhost:8025). O padrão é

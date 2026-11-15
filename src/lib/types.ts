@@ -4,7 +4,7 @@ export type DeviceViewport = "desktop" | "mobile";
 
 export type RunStatus = "pending" | "running" | "completed" | "failed";
 
-export type MissionStatus = "completed" | "abandoned";
+export type MissionStatus = "completed" | "abandoned" | "blocked";
 
 export type StepAction = "click" | "type" | "scroll" | "finish" | "give_up";
 

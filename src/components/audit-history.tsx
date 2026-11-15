@@ -47,6 +47,9 @@ function statusStyle(session: Session): string {
   if (session.missionStatus === "completed") {
     return "border-emerald-300/20 bg-emerald-300/[0.06] text-emerald-200";
   }
+  if (session.missionStatus === "blocked") {
+    return "border-amber-300/20 bg-amber-300/[0.06] text-amber-200";
+  }
   return "border-amber-300/20 bg-amber-300/[0.06] text-amber-200";
 }
 

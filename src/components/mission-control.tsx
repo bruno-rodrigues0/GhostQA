@@ -667,7 +667,7 @@ export function MissionControl({ user, account, isAdmin }: MissionControlProps) 
             <p className="mt-2 text-sm leading-6 text-slate-400">
               {limitReachedPlan === "pro"
                 ? "Sua conta atingiu o limite mensal de auditorias. O limite será renovado no próximo mês."
-                : "O plano Pro inclui até 100 auditorias por mês, Mobile, 3 personas simultâneas e jornadas com até 12 passos. A ativação é feita manualmente pela equipe GhostQA."}
+                : "O plano Pro inclui até 100 auditorias por mês, Mobile, 3 personas simultâneas e jornadas com até 30 passos. A ativação é feita manualmente pela equipe GhostQA."}
             </p>
             <div className="mt-5 flex gap-2">
               <button
