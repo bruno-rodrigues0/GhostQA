@@ -51,7 +51,7 @@ export function createMarkdownReport(session: Session): string {
   const actionPlan = getPrioritizedSteps(session.steps);
   const personas = session.personas.map(({ name }) => name).join(", ");
   const lines = [
-    "# Relatório de Auditoria UX — GhostQA",
+    "# Relatório de Auditoria UX — Bunter",
     "",
     `- **URL:** ${session.targetUrl}`,
     `- **Objetivo:** ${session.objective}`,

@@ -254,7 +254,7 @@ export async function requestPersonaDecision(
       lastValidationError = error;
       if (attempt === 0) {
         console.warn(
-          `[GhostQA] Resposta do modelo fora do contrato (${error.message}); solicitando uma nova decisão.`,
+          `[Bunter] Resposta do modelo fora do contrato (${error.message}); solicitando uma nova decisão.`,
         );
       }
     }

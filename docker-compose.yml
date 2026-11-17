@@ -3,8 +3,8 @@ services:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-ghostqa}
-      POSTGRES_USER: ${POSTGRES_USER:-ghostqa}
+      POSTGRES_DB: ${POSTGRES_DB:-bunter}
+      POSTGRES_USER: ${POSTGRES_USER:-bunter}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configure POSTGRES_PASSWORD no arquivo .env}
     ports:
       - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
@@ -30,23 +30,26 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     restart: unless-stopped
     env_file:
       - .env
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-ghostqa}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-ghostqa}?schema=public
+      DATABASE_URL: postgresql://${POSTGRES_USER:-bunter}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-bunter}?schema=public
       BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3001}
       SMTP_HOST: ${SMTP_HOST:-mailpit}
       SMTP_PORT: ${SMTP_PORT:-1025}
       SMTP_USER: ${SMTP_USER:-}
       SMTP_PASSWORD: ${SMTP_PASSWORD:-}
-      SMTP_FROM: ${SMTP_FROM:-GhostQA <no-reply@ghostqa.local>}
+      SMTP_FROM: ${SMTP_FROM:-Bunter <no-reply@bunter.local>}
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: ""
       PORT: 3001
       HOSTNAME: 0.0.0.0
     ports:
-      - "127.0.0.1:${GHOSTQA_PORT:-3001}:3001"
+      - "127.0.0.1:${BUNTER_PORT:-3001}:3001"
     volumes:
       - ./data:/app/data
       - ./public/runs:/app/public/runs

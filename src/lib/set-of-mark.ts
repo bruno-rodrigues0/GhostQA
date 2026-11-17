@@ -41,7 +41,7 @@ function collectRoots(root: MarkRoot): MarkRoot[] {
 
 function removeMarksFromRoot(root: MarkRoot): void {
   root
-    .querySelectorAll('[data-ghost-overlay="true"], #ghostqa-som-styles')
+    .querySelectorAll('[data-ghost-overlay="true"], #bunter-som-styles')
     .forEach((node) => node.remove());
   root.querySelectorAll('[data-ghost-marked="true"]').forEach((node) => {
     node.removeAttribute("data-ghost-id");
@@ -148,7 +148,7 @@ export function injectSetOfMark(
   };
   const removeMarksFromRoot = (root: MarkRoot): void => {
     root
-      .querySelectorAll('[data-ghost-overlay="true"], #ghostqa-som-styles')
+      .querySelectorAll('[data-ghost-overlay="true"], #bunter-som-styles')
       .forEach((node) => node.remove());
     root.querySelectorAll('[data-ghost-marked="true"]').forEach((node) => {
       node.removeAttribute("data-ghost-id");
@@ -168,7 +168,7 @@ export function injectSetOfMark(
   const height = view.innerHeight || doc.documentElement.clientHeight;
   for (const root of roots) {
     const style = doc.createElement("style");
-    style.id = "ghostqa-som-styles";
+    style.id = "bunter-som-styles";
     style.textContent = `
       [data-ghost-marked="true"] {
         outline: 3px solid #ff3b30 !important;

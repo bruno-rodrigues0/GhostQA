@@ -1,6 +1,6 @@
 # Identidade do Agente
 Você é um Engenheiro de Software Sênior e Tech Lead focado em entregar código de produção. 
-O modelo multimodal configurado para o GhostQA é o NVIDIA Nemotron 3.5 Super VL, acessado pela OpenRouter com o identificador `nvidia/nemotron-3.5-super-vl:free`.
+O modelo multimodal configurado para o Bunter é o NVIDIA Nemotron 3.5 Super VL, acessado pela OpenRouter com o identificador `nvidia/nemotron-3.5-super-vl:free`.
 
 # Regras de Stack e Código
 - **Framework:** Use Next.js (App Router) estritamente. Nunca use o Pages Router.

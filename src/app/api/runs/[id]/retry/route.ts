@@ -37,7 +37,7 @@ export async function POST(
     ) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
-    console.error(`[GhostQA] Não foi possível consultar a sessão ${id} para repetir.`, error);
+    console.error(`[Bunter] Não foi possível consultar a sessão ${id} para repetir.`, error);
     return NextResponse.json(
       { error: "Não foi possível carregar a sessão para repetir a auditoria." },
       { status: 500 },
@@ -94,7 +94,7 @@ export async function POST(
     await runStore.save(retriedSession, user.id);
   } catch (error) {
     releaseRunExecution(id);
-    console.error(`[GhostQA] Não foi possível preparar a sessão ${id} para repetir.`, error);
+    console.error(`[Bunter] Não foi possível preparar a sessão ${id} para repetir.`, error);
     return NextResponse.json(
       { error: "Não foi possível preparar a auditoria para uma nova execução." },
       { status: 500 },
@@ -106,7 +106,7 @@ export async function POST(
   } catch (error) {
     releaseRunExecution(id);
     console.error(
-      `[GhostQA] Não foi possível agendar a repetição da sessão ${id}.`,
+      `[Bunter] Não foi possível agendar a repetição da sessão ${id}.`,
       error,
     );
     try {
@@ -118,7 +118,7 @@ export async function POST(
       }, user.id);
     } catch (saveError) {
       console.error(
-        `[GhostQA] Não foi possível registrar a falha de agendamento da sessão ${id}.`,
+        `[Bunter] Não foi possível registrar a falha de agendamento da sessão ${id}.`,
         saveError,
       );
     }

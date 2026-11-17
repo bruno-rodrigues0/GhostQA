@@ -15,9 +15,9 @@ RUN npx playwright install --with-deps chromium \
 
 COPY . .
 
-RUN DATABASE_URL="postgresql://ghostqa:ghostqa@localhost:5432/ghostqa?schema=public" \
+RUN DATABASE_URL="postgresql://bunter:bunter@localhost:5432/bunter?schema=public" \
     npm run db:generate \
-    && DATABASE_URL="postgresql://ghostqa:ghostqa@localhost:5432/ghostqa?schema=public" \
+    && DATABASE_URL="postgresql://bunter:bunter@localhost:5432/bunter?schema=public" \
        BETTER_AUTH_SECRET="build-only-secret-that-is-not-used-at-runtime" \
        BETTER_AUTH_URL="http://localhost:3001" \
        npm run build

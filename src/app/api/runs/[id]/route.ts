@@ -38,7 +38,7 @@ export async function GET(
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    console.error(`[GhostQA] Não foi possível carregar a sessão ${id}.`, error);
+    console.error(`[Bunter] Não foi possível carregar a sessão ${id}.`, error);
     return NextResponse.json(
       { error: "Não foi possível carregar a sessão de auditoria." },
       { status: 500 },

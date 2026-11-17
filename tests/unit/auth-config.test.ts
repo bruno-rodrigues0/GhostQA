@@ -33,7 +33,7 @@ describe("authentication server configuration", () => {
 
   it("configures verified email/password sessions and sends both email types", async () => {
     vi.stubEnv("BETTER_AUTH_SECRET", "a".repeat(32));
-    vi.stubEnv("BETTER_AUTH_URL", "https://ghostqa.example");
+    vi.stubEnv("BETTER_AUTH_URL", "https://bunter.example");
 
     const result = getAuth();
     expect(betterAuth).toHaveBeenCalledOnce();
@@ -55,7 +55,7 @@ describe("authentication server configuration", () => {
       advanced: { cookiePrefix: string };
     };
     expect(configuration).toMatchObject({
-      baseURL: "https://ghostqa.example",
+      baseURL: "https://bunter.example",
       emailAndPassword: {
         enabled: true,
         minPasswordLength: 12,
@@ -67,26 +67,26 @@ describe("authentication server configuration", () => {
         autoSignInAfterVerification: true,
       },
       session: { expiresIn: 604800, updateAge: 86400 },
-      advanced: { cookiePrefix: "ghostqa" },
+      advanced: { cookiePrefix: "bunter" },
     });
 
     await configuration.emailAndPassword.sendResetPassword({
       user: { email: "person@example.com" },
-      url: "https://ghostqa.example/reset",
+      url: "https://bunter.example/reset",
     });
     await configuration.emailVerification.sendVerificationEmail({
       user: { email: "person@example.com" },
-      url: "https://ghostqa.example/verify",
+      url: "https://bunter.example/verify",
     });
     expect(sendAuthEmail).toHaveBeenNthCalledWith(1, {
       to: "person@example.com",
-      subject: "Redefinição de senha do GhostQA",
-      url: "https://ghostqa.example/reset",
+      subject: "Redefinição de senha do Bunter",
+      url: "https://bunter.example/reset",
     });
     expect(sendAuthEmail).toHaveBeenNthCalledWith(2, {
       to: "person@example.com",
-      subject: "Confirme seu e-mail do GhostQA",
-      url: "https://ghostqa.example/verify",
+      subject: "Confirme seu e-mail do Bunter",
+      url: "https://bunter.example/verify",
     });
     expect(result).toHaveProperty("configuration");
   });

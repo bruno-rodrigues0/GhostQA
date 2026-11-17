@@ -13,7 +13,7 @@ import { sendAuthEmail } from "../../src/lib/email";
 
 beforeEach(() => {
   vi.stubEnv("SMTP_HOST", "smtp.example.com");
-  vi.stubEnv("SMTP_FROM", "GhostQA <noreply@example.com>");
+  vi.stubEnv("SMTP_FROM", "Bunter <noreply@example.com>");
   vi.stubEnv("SMTP_PORT", "587");
   vi.stubEnv("SMTP_USER", "");
   vi.stubEnv("SMTP_PASSWORD", "");
@@ -54,7 +54,7 @@ describe("authentication email delivery", () => {
     }
 
     vi.stubEnv("SMTP_PORT", "587");
-    vi.stubEnv("SMTP_USER", "ghostqa");
+    vi.stubEnv("SMTP_USER", "bunter");
     await expect(sendAuthEmail({
       to: "user@example.com",
       subject: "Verify",
@@ -74,14 +74,14 @@ describe("authentication email delivery", () => {
       secure: false,
     });
     expect(sendMail).toHaveBeenCalledWith({
-      from: "GhostQA <noreply@example.com>",
+      from: "Bunter <noreply@example.com>",
       to: "user@example.com",
       subject: "Verify",
       text: "Verify\n\nAcesse o link para continuar:\nhttps://example.com/verify\n\nSe você não solicitou esta ação, ignore esta mensagem.",
     });
 
     vi.stubEnv("SMTP_PORT", "465");
-    vi.stubEnv("SMTP_USER", "ghostqa");
+    vi.stubEnv("SMTP_USER", "bunter");
     vi.stubEnv("SMTP_PASSWORD", "secret");
     await sendAuthEmail({
       to: "user@example.com",
@@ -92,7 +92,7 @@ describe("authentication email delivery", () => {
       host: "smtp.example.com",
       port: 465,
       secure: true,
-      auth: { user: "ghostqa", pass: "secret" },
+      auth: { user: "bunter", pass: "secret" },
     });
   });
 

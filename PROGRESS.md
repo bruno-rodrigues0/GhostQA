@@ -1,4 +1,4 @@
-# Status do Projeto: GhostQA
+# Status do Projeto: Bunter
 
 ## 🔄 Sprint Atual
 - [x] Fase 1: Setup do Projeto (Next.js, Tailwind, Shadcn) — revisada para OpenRouter

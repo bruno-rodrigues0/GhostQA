@@ -38,7 +38,7 @@ export function ResetPasswordForm() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#090d16] px-5 text-slate-100">
       <section className="w-full max-w-md rounded-2xl border border-white/[0.08] bg-[#0e1521] p-7">
-        <Link href="/login" className="text-sm font-semibold text-slate-200">GhostQA</Link>
+        <Link href="/login" className="text-sm font-semibold text-slate-200">Bunter</Link>
         <h1 className="mt-8 text-2xl font-semibold">Redefinir senha</h1>
         {success ? (
           <>

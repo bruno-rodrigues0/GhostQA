@@ -276,7 +276,7 @@ async function removeMarksAndDrawActionMarker(
         for (const root of roots) {
           root
             .querySelectorAll(
-              '[data-ghost-overlay="true"], #ghostqa-som-styles, [data-ghost-action-marker="true"]',
+              '[data-ghost-overlay="true"], #bunter-som-styles, [data-ghost-action-marker="true"]',
             )
             .forEach((node) => node.remove());
           root.querySelectorAll("[data-ghost-marked]").forEach((node) => {
@@ -361,7 +361,7 @@ async function clearActionMarker(page: Page): Promise<void> {
       for (const root of roots) {
         root
           .querySelectorAll(
-            '[data-ghost-overlay="true"], [data-ghost-action-marker="true"], #ghostqa-som-styles',
+            '[data-ghost-overlay="true"], [data-ghost-action-marker="true"], #bunter-som-styles',
           )
           .forEach((node) => node.remove());
         root
@@ -558,7 +558,7 @@ export async function runGhostSession(
   };
   const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH?.trim();
   console.log(
-    `[GhostQA] Iniciando missão ${session.id} com ${session.personas.length} persona(s).`,
+    `[Bunter] Iniciando missão ${session.id} com ${session.personas.length} persona(s).`,
   );
   let browser: Browser | undefined;
 
@@ -601,7 +601,7 @@ export async function runGhostSession(
           createdAt: new Date().toISOString(),
         };
         addTechLog(session, log);
-        console.log(`[GhostQA] Erro de console: ${log.message}`);
+        console.log(`[Bunter] Erro de console: ${log.message}`);
       });
       page.on("pageerror", (error) => {
         const log: TechLog = {
@@ -611,7 +611,7 @@ export async function runGhostSession(
           createdAt: new Date().toISOString(),
         };
         addTechLog(session, log);
-        console.log(`[GhostQA] Erro de página: ${log.message}`);
+        console.log(`[Bunter] Erro de página: ${log.message}`);
       });
       page.on("response", (response) => {
         if (response.status() < 400) {
@@ -626,10 +626,10 @@ export async function runGhostSession(
           createdAt: new Date().toISOString(),
         };
         addTechLog(session, log);
-        console.log(`[GhostQA] Resposta HTTP ${log.status}: ${log.url}`);
+        console.log(`[Bunter] Resposta HTTP ${log.status}: ${log.url}`);
       });
 
-      console.log(`[GhostQA] Persona ${persona.name}: ${session.targetUrl}`);
+      console.log(`[Bunter] Persona ${persona.name}: ${session.targetUrl}`);
       const targetHostname = new URL(session.targetUrl).hostname;
       await navigateWithDnsRetry(
         session.targetUrl,
@@ -648,7 +648,7 @@ export async function runGhostSession(
             createdAt: new Date().toISOString(),
           };
           addTechLog(session, log);
-          console.warn(`[GhostQA] ${log.message}`);
+          console.warn(`[Bunter] ${log.message}`);
         },
       );
       try {
@@ -658,7 +658,7 @@ export async function runGhostSession(
           throw error;
         }
         console.warn(
-          "[GhostQA] A página não atingiu networkidle em 10s; seguindo com o estado atual.",
+          "[Bunter] A página não atingiu networkidle em 10s; seguindo com o estado atual.",
         );
       }
 
@@ -679,7 +679,7 @@ export async function runGhostSession(
             createdAt: new Date().toISOString(),
           };
           addTechLog(session, log);
-          console.warn(`[GhostQA] ${log.message}`);
+          console.warn(`[Bunter] ${log.message}`);
           break;
         }
 
@@ -738,7 +738,7 @@ export async function runGhostSession(
             createdAt: new Date().toISOString(),
           };
           addTechLog(session, log);
-          console.warn(`[GhostQA] ${log.message}`);
+          console.warn(`[Bunter] ${log.message}`);
 
           if (attempt === 1) {
             decision = {
@@ -806,7 +806,7 @@ export async function runGhostSession(
                 createdAt: new Date().toISOString(),
               };
               addTechLog(session, log);
-              console.warn(`[GhostQA] ${log.message}`);
+              console.warn(`[Bunter] ${log.message}`);
             } else if (
               !(error instanceof errors.TimeoutError) &&
               !(error instanceof AutomationTargetUnavailableError)
@@ -828,7 +828,7 @@ export async function runGhostSession(
                 createdAt: new Date().toISOString(),
               };
               addTechLog(session, log);
-              console.warn(`[GhostQA] ${log.message}`);
+              console.warn(`[Bunter] ${log.message}`);
               if (consecutiveActionFailures >= 3) {
                 const repeatedFailureLog: TechLog = {
                   id: randomUUID(),
@@ -856,7 +856,7 @@ export async function runGhostSession(
         session.updatedAt = new Date().toISOString();
         await options.onUpdate?.(session);
         console.log(
-          `[GhostQA] Persona ${persona.name}, passo ${order}/${maxSteps}: ${decision.acao}${actionFailed ? " (timeout recuperável)" : ""}.`,
+          `[Bunter] Persona ${persona.name}, passo ${order}/${maxSteps}: ${decision.acao}${actionFailed ? " (timeout recuperável)" : ""}.`,
         );
 
         if (
@@ -890,7 +890,7 @@ export async function runGhostSession(
     session.errorMessage = null;
     session.updatedAt = new Date().toISOString();
     await options.onUpdate?.(session);
-    console.log(`[GhostQA] Missão ${session.id} concluída.`);
+    console.log(`[Bunter] Missão ${session.id} concluída.`);
     return session;
   } catch (error) {
     session.status = "failed";
@@ -899,13 +899,13 @@ export async function runGhostSession(
     session.updatedAt = new Date().toISOString();
     await options.onUpdate?.(session);
     console.error(
-      `[GhostQA] Missão ${session.id} falhou: ${session.errorMessage}`,
+      `[Bunter] Missão ${session.id} falhou: ${session.errorMessage}`,
     );
     throw error;
   } finally {
     if (browser) {
       await browser.close();
-      console.log(`[GhostQA] Navegador encerrado para ${session.id}.`);
+      console.log(`[Bunter] Navegador encerrado para ${session.id}.`);
     }
   }
 }
@@ -926,7 +926,7 @@ export async function captureSetOfMarkScreenshot(
 
   await mkdir(outputDirectory, { recursive: true });
 
-  console.log(`[GhostQA] Iniciando captura Set-of-Mark: ${targetUrl.href}`);
+  console.log(`[Bunter] Iniciando captura Set-of-Mark: ${targetUrl.href}`);
   const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH?.trim();
   const browser = await chromium.launch({
     headless: true,
@@ -951,7 +951,7 @@ export async function captureSetOfMarkScreenshot(
         createdAt: new Date().toISOString(),
       };
       techLogs.push(log);
-      console.log(`[GhostQA] Erro de console: ${log.message}`);
+      console.log(`[Bunter] Erro de console: ${log.message}`);
     });
 
     page.on("pageerror", (error) => {
@@ -962,7 +962,7 @@ export async function captureSetOfMarkScreenshot(
         createdAt: new Date().toISOString(),
       };
       techLogs.push(log);
-      console.log(`[GhostQA] Erro de página: ${log.message}`);
+      console.log(`[Bunter] Erro de página: ${log.message}`);
     });
 
     page.on("response", (response) => {
@@ -979,10 +979,10 @@ export async function captureSetOfMarkScreenshot(
         createdAt: new Date().toISOString(),
       };
       techLogs.push(log);
-      console.log(`[GhostQA] Resposta HTTP ${log.status}: ${log.url}`);
+      console.log(`[Bunter] Resposta HTTP ${log.status}: ${log.url}`);
     });
 
-    console.log(`[GhostQA] Navegando para ${targetUrl.href}`);
+    console.log(`[Bunter] Navegando para ${targetUrl.href}`);
     await navigateWithDnsRetry(
       targetUrl.href,
       () =>
@@ -1000,7 +1000,7 @@ export async function captureSetOfMarkScreenshot(
           message,
           createdAt: new Date().toISOString(),
         });
-        console.warn(`[GhostQA] ${message}`);
+        console.warn(`[Bunter] ${message}`);
       },
     );
 
@@ -1012,7 +1012,7 @@ export async function captureSetOfMarkScreenshot(
       }
 
       console.warn(
-        "[GhostQA] A página não atingiu networkidle em 10s; seguindo com o estado atual.",
+        "[Bunter] A página não atingiu networkidle em 10s; seguindo com o estado atual.",
       );
     }
 
@@ -1024,7 +1024,7 @@ export async function captureSetOfMarkScreenshot(
       animations: "disabled",
     });
     console.log(
-      `[GhostQA] Captura salva em ${screenshotPath} (${elements.length} elementos marcados).`,
+      `[Bunter] Captura salva em ${screenshotPath} (${elements.length} elementos marcados).`,
     );
 
     return {
@@ -1034,6 +1034,6 @@ export async function captureSetOfMarkScreenshot(
     };
   } finally {
     await browser.close();
-    console.log(`[GhostQA] Navegador encerrado para ${options.sessionId}.`);
+    console.log(`[Bunter] Navegador encerrado para ${options.sessionId}.`);
   }
 }

@@ -168,7 +168,7 @@ export function RunReport({ sessionId }: RunReportProps) {
     const downloadUrl = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = downloadUrl;
-    link.download = `ghostqa-relatorio-${session.id}.md`;
+    link.download = `bunter-relatorio-${session.id}.md`;
     link.click();
     URL.revokeObjectURL(downloadUrl);
   }
@@ -360,7 +360,7 @@ export function RunReport({ sessionId }: RunReportProps) {
             className="mt-5 flex items-start gap-2 rounded-xl border border-amber-300/15 bg-amber-300/[0.05] px-4 py-3 text-xs leading-5 text-amber-100"
           >
             <CircleAlert size={14} className="mt-0.5 shrink-0" />
-            A auditoria parou diante de uma verificação humana. Resolva-a manualmente no site e repita a auditoria; o GhostQA não tenta interagir com CAPTCHAs.
+            A auditoria parou diante de uma verificação humana. Resolva-a manualmente no site e repita a auditoria; o Bunter não tenta interagir com CAPTCHAs.
           </div>
         )}
         {retryError && (
@@ -722,7 +722,7 @@ export function RunReport({ sessionId }: RunReportProps) {
         )}
 
         <footer className="mt-7 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.06] pt-4 text-[10px] text-slate-700">
-          <span>GhostQA · Relatório de qualidade comportamental</span>
+          <span>Bunter · Relatório de qualidade comportamental</span>
           <Link
             href="/"
             className="inline-flex items-center gap-1.5 transition hover:text-slate-400"

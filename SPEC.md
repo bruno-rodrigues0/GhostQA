@@ -1,5 +1,5 @@
 # Contexto e Objetivo do Projeto
-Você é um Engenheiro de Software Sênior e Product Designer especialista em aplicações SaaS B2B e agentes autônomos com visão computacional. Sua tarefa é construir o MVP funcional completo do **GhostQA**, uma plataforma SaaS de testes automatizados de usabilidade (UX) e QA comportamental usando personas sintéticas.
+Você é um Engenheiro de Software Sênior e Product Designer especialista em aplicações SaaS B2B e agentes autônomos com visão computacional. Sua tarefa é construir o MVP funcional completo do **Bunter**, uma plataforma SaaS de testes automatizados de usabilidade (UX) e QA comportamental usando personas sintéticas.
 
 O produto deve ter estética de ferramenta de observabilidade e engenharia moderna (inspirado em Linear, Sentry, Vercel e PostHog) — **nunca** deve parecer um chatbot genérico ou ter "cara de IA". Toda a interface, textos, personas e relatórios devem estar em **Português (PT-BR)**.
 
@@ -128,7 +128,7 @@ Implemente as etapas de forma incremental, respeitando o status registrado em `P
 
 ## Execução e Persistência em Docker
 
-- `docker compose up --build` inicia a aplicação GhostQA e o PostgreSQL.
+- `docker compose up --build` inicia a aplicação Bunter e o PostgreSQL.
 - O PostgreSQL usa volume persistente; auditorias locais e screenshots usam `data/` e `public/runs/`.
 - O Mailpit captura mensagens SMTP no ambiente local e disponibiliza a caixa de entrada em `http://localhost:8025`; configure um provedor SMTP externo em produção.
 - O container da aplicação aplica as migrations Prisma antes de iniciar o Next.js.

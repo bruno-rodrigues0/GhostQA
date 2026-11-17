@@ -160,7 +160,7 @@ describe("Set-of-Mark", () => {
     expect(button.hasAttribute("data-ghost-id")).toBe(false);
     expect(button.hasAttribute("data-ghost-marked")).toBe(false);
     expect(document.querySelector('[data-ghost-overlay="true"]')).toBeNull();
-    expect(document.querySelector("#ghostqa-som-styles")).toBeNull();
+    expect(document.querySelector("#bunter-som-styles")).toBeNull();
   });
 
   it("não marca controles encobertos e escolhe ponto alternativo clicável", () => {
@@ -230,12 +230,12 @@ describe("Set-of-Mark", () => {
     expect(marked).toMatchObject([
       { id: 11, tagName: "button", label: "Continuar" },
     ]);
-    expect(root.querySelector("#ghostqa-som-styles")).not.toBeNull();
+    expect(root.querySelector("#bunter-som-styles")).not.toBeNull();
     expect(root.querySelector('[data-ghost-overlay="true"]')).not.toBeNull();
 
     removeSetOfMark(document);
 
-    expect(root.querySelector("#ghostqa-som-styles")).toBeNull();
+    expect(root.querySelector("#bunter-som-styles")).toBeNull();
     expect(root.querySelector('[data-ghost-overlay="true"]')).toBeNull();
     expect(button.hasAttribute("data-ghost-id")).toBe(false);
   });

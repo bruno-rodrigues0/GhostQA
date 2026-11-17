@@ -59,7 +59,7 @@ describe("account API", () => {
       error: "Não foi possível carregar os dados da conta.",
     });
     expect(errorSpy).toHaveBeenCalledWith(
-      "[GhostQA] Não foi possível consultar a conta user-1.",
+      "[Bunter] Não foi possível consultar a conta user-1.",
       failure,
     );
   });

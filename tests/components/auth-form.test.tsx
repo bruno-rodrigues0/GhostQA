@@ -85,7 +85,7 @@ describe("AuthForm", () => {
       .mockResolvedValueOnce({});
     const assign = vi.fn();
     vi.stubGlobal("window", {
-      location: { origin: "https://ghostqa.example", assign },
+      location: { origin: "https://bunter.example", assign },
     });
     const ui = await render(<AuthForm />);
 

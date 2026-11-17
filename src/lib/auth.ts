@@ -14,7 +14,7 @@ export function getAuth() {
   }
 
   return betterAuth({
-    appName: "GhostQA",
+    appName: "Bunter",
     baseURL,
     secret,
     database: prismaAdapter(prisma, { provider: "postgresql" }),
@@ -25,7 +25,7 @@ export function getAuth() {
       sendResetPassword: async ({ user, url }) => {
         await sendAuthEmail({
           to: user.email,
-          subject: "Redefinição de senha do GhostQA",
+          subject: "Redefinição de senha do Bunter",
           url,
         });
       },
@@ -34,7 +34,7 @@ export function getAuth() {
       sendVerificationEmail: async ({ user, url }) => {
         await sendAuthEmail({
           to: user.email,
-          subject: "Confirme seu e-mail do GhostQA",
+          subject: "Confirme seu e-mail do Bunter",
           url,
         });
       },
@@ -47,7 +47,7 @@ export function getAuth() {
       updateAge: 60 * 60 * 24,
     },
     advanced: {
-      cookiePrefix: "ghostqa",
+      cookiePrefix: "bunter",
     },
   });
 }

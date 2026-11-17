@@ -122,7 +122,7 @@ export function AuditHistory() {
               <ArrowLeft size={15} />
             </Link>
             <span className="text-xs font-semibold tracking-wide text-slate-200">
-              GhostQA
+              Bunter
             </span>
             <span className="text-xs text-slate-700">/</span>
             <span className="text-xs text-slate-300">Auditorias</span>
@@ -275,7 +275,7 @@ export function AuditHistory() {
         </section>
 
         <footer className="mt-7 border-t border-white/[0.06] pt-4 text-[10px] text-slate-700">
-          GhostQA · Engenharia de qualidade comportamental
+          Bunter · Engenharia de qualidade comportamental
         </footer>
       </div>
     </main>

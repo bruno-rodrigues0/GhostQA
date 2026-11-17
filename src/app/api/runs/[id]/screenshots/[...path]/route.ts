@@ -55,7 +55,7 @@ export async function GET(
     ) {
       return NextResponse.json({ error: "A screenshot não foi encontrada." }, { status: 404 });
     }
-    console.error(`[GhostQA] Não foi possível servir screenshot da auditoria ${id}.`, error);
+    console.error(`[Bunter] Não foi possível servir screenshot da auditoria ${id}.`, error);
     return NextResponse.json({ error: "Não foi possível carregar a screenshot." }, { status: 500 });
   }
 }

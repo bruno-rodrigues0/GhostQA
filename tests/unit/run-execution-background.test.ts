@@ -80,7 +80,7 @@ describe("background run execution", () => {
     await executeClaimedRun(current, { client: client(), model: "test-model" });
 
     expect(error).toHaveBeenCalledWith(
-      `[GhostQA] Execução em background da sessão ${current.id} terminou com erro.`,
+      `[Bunter] Execução em background da sessão ${current.id} terminou com erro.`,
       failure,
     );
     expect(claimRunExecution(current.id)).toBe(true);
@@ -94,7 +94,7 @@ describe("background run execution", () => {
     await executeClaimedRun(current, { client: client(), model: "test-model" });
 
     expect(error).toHaveBeenCalledWith(
-      `[GhostQA] Execução em background da sessão ${current.id} terminou com erro.`,
+      `[Bunter] Execução em background da sessão ${current.id} terminou com erro.`,
       "unexpected failure",
     );
   });

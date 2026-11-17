@@ -10,7 +10,7 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "GhostQA | Mission Control",
+  title: "Bunter | Mission Control",
   description: "Auditoria comportamental de UX com personas sintéticas.",
 };
 

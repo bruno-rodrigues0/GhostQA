@@ -33,7 +33,7 @@ export async function GET(): Promise<NextResponse> {
       headers: { "Cache-Control": "no-store" },
     });
   } catch (error) {
-    console.error("[GhostQA] Não foi possível carregar o histórico de sessões.", error);
+    console.error("[Bunter] Não foi possível carregar o histórico de sessões.", error);
     return NextResponse.json(
       { error: "Não foi possível carregar o histórico de auditorias." },
       { status: 500 },
@@ -50,7 +50,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   try {
     plan = await getUserPlan(user.id);
   } catch (error) {
-    console.error(`[GhostQA] Não foi possível consultar o plano da conta ${user.id}.`, error);
+    console.error(`[Bunter] Não foi possível consultar o plano da conta ${user.id}.`, error);
     return NextResponse.json({ error: "Não foi possível validar o plano da conta." }, { status: 500 });
   }
 
@@ -123,7 +123,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       );
     }
     releaseRunExecution(session.id);
-    console.error("[GhostQA] Não foi possível iniciar a sessão.", error);
+    console.error("[Bunter] Não foi possível iniciar a sessão.", error);
     return NextResponse.json(
       { error: "Não foi possível iniciar a sessão de auditoria." },
       { status: 500 },
@@ -142,7 +142,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   } catch (error) {
     releaseRunExecution(session.id);
     console.error(
-      `[GhostQA] Não foi possível agendar a execução da sessão ${session.id}.`,
+      `[Bunter] Não foi possível agendar a execução da sessão ${session.id}.`,
       error,
     );
     try {
@@ -154,7 +154,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       });
     } catch (saveError) {
       console.error(
-        `[GhostQA] Não foi possível registrar a falha de agendamento da sessão ${session.id}.`,
+        `[Bunter] Não foi possível registrar a falha de agendamento da sessão ${session.id}.`,
         saveError,
       );
     }

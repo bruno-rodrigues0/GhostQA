@@ -17,7 +17,7 @@ afterEach(async () => {
 });
 
 async function createSessionStore() {
-  storeDirectory = await mkdtemp(path.join(os.tmpdir(), "ghostqa-runs-"));
+  storeDirectory = await mkdtemp(path.join(os.tmpdir(), "bunter-runs-"));
   return createRunStore(storeDirectory);
 }
 

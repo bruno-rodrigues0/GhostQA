@@ -194,7 +194,7 @@ export function MissionControl({ user, account, isAdmin }: MissionControlProps) 
           </span>
           <span>
             <span className="block text-sm font-semibold tracking-wide">
-              GhostQA
+              Bunter
             </span>
             <span className="block text-[10px] tracking-[0.18em] text-slate-500">
               MISSION CONTROL
@@ -270,7 +270,7 @@ export function MissionControl({ user, account, isAdmin }: MissionControlProps) 
       <div className="lg:pl-[248px]">
         <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-white/[0.07] bg-[#090d16]/90 px-5 backdrop-blur-xl sm:px-8">
           <div className="flex items-center gap-2 text-xs text-slate-500">
-            <span className="lg:hidden font-semibold text-slate-200">GhostQA</span>
+            <span className="lg:hidden font-semibold text-slate-200">Bunter</span>
             <span className="hidden lg:inline">Workspace</span>
             <span className="text-slate-700">/</span>
             <span className="text-slate-300">Nova missão</span>
@@ -631,7 +631,7 @@ export function MissionControl({ user, account, isAdmin }: MissionControlProps) 
           </div>
 
           <footer className="mt-8 flex items-center justify-between border-t border-white/[0.06] pt-4 text-[10px] text-slate-700">
-            <span>GhostQA · Engenharia de qualidade comportamental</span>
+            <span>Bunter · Engenharia de qualidade comportamental</span>
             <span className="hidden items-center gap-1 sm:flex">
               <span className="size-1 rounded-full bg-emerald-400/70" />
               Ambiente seguro
@@ -667,7 +667,7 @@ export function MissionControl({ user, account, isAdmin }: MissionControlProps) 
             <p className="mt-2 text-sm leading-6 text-slate-400">
               {limitReachedPlan === "pro"
                 ? "Sua conta atingiu o limite mensal de auditorias. O limite será renovado no próximo mês."
-                : "O plano Pro inclui até 100 auditorias por mês, Mobile, 3 personas simultâneas e jornadas com até 30 passos. A ativação é feita manualmente pela equipe GhostQA."}
+                : "O plano Pro inclui até 100 auditorias por mês, Mobile, 3 personas simultâneas e jornadas com até 30 passos. A ativação é feita manualmente pela equipe Bunter."}
             </p>
             <div className="mt-5 flex gap-2">
               <button

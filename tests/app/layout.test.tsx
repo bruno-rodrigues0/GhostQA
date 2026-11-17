@@ -12,7 +12,7 @@ describe("root layout", () => {
     const page = RootLayout({ children: React.createElement("main", null, "content") });
 
     expect(metadata).toEqual({
-      title: "GhostQA | Mission Control",
+      title: "Bunter | Mission Control",
       description: "Auditoria comportamental de UX com personas sintéticas.",
     });
     expect(page.type).toBe("html");

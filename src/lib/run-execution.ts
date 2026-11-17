@@ -34,7 +34,7 @@ export async function executeClaimedRun(
     });
   } catch (error) {
     console.error(
-      `[GhostQA] Execução em background da sessão ${session.id} terminou com erro.`,
+      `[Bunter] Execução em background da sessão ${session.id} terminou com erro.`,
       error,
     );
   } finally {

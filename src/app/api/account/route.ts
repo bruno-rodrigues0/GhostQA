@@ -16,7 +16,7 @@ export async function GET(): Promise<NextResponse> {
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (error) {
-    console.error(`[GhostQA] Não foi possível consultar a conta ${user.id}.`, error);
+    console.error(`[Bunter] Não foi possível consultar a conta ${user.id}.`, error);
     return NextResponse.json(
       { error: "Não foi possível carregar os dados da conta." },
       { status: 500 },

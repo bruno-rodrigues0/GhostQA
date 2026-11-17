@@ -79,7 +79,7 @@ describe("private screenshot route validation and file errors", () => {
       error: "Não foi possível carregar a screenshot.",
     });
     expect(error).toHaveBeenCalledWith(
-      `[GhostQA] Não foi possível servir screenshot da auditoria ${runId}.`,
+      `[Bunter] Não foi possível servir screenshot da auditoria ${runId}.`,
       failure,
     );
   });

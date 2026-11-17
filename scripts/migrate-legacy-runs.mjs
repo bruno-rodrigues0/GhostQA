@@ -144,7 +144,7 @@ try {
     console.log("Migração concluída; as screenshots legadas públicas foram removidas.");
   }
 } catch (error) {
-  console.error("[GhostQA] Migração legada cancelada.", error);
+  console.error("[Bunter] Migração legada cancelada.", error);
   process.exitCode = 1;
 } finally {
   await prisma.$disconnect();

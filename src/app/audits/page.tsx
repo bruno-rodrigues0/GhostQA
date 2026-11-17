@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/lib/auth-session";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Auditorias | GhostQA",
+  title: "Auditorias | Bunter",
 };
 export const dynamic = "force-dynamic";
 
